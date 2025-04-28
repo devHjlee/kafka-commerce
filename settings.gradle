@@ -1,1 +1,5 @@
 rootProject.name = 'kafka-commerce'
+
+include 'kafka-commerce-common'
+include 'kafka-commerce-user'
+include 'kafka-commerce-product'
