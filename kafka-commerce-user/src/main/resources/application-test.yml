@@ -1,6 +1,4 @@
 spring:
-  profiles:
-    active: dev  # 기본적으로 dev 프로파일을 활성화
   datasource:
     url: jdbc:h2:mem:testdb
     driver-class-name: org.h2.Driver
@@ -25,6 +23,11 @@ server:
       force: true
       enabled: true
 
+logging:
+  level:
+    root: INFO
+    com.kafkacommerce: DEBUG
+
 jwt:
-  secret: kafka-commerce-jwt-secret-key-256-bits-long-1234567890abcdefghijklmnopqrstuvwxyz
+  secret: test-jwt-secret-key-256-bits-long-1234567890abcdefghijklmnopqrstuvwxyz
   expiration: 86400000 # 24시간 
