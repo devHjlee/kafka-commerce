@@ -27,7 +27,14 @@ logging:
   level:
     root: INFO
     com.kafkacommerce: DEBUG
+    org.springframework.web: DEBUG        # 웹 요청 관련 로그
+    org.springframework.boot.autoconfigure: INFO  # 부트 설정 로그
+    org.apache.catalina: INFO             # 톰캣 요청 처리 로그
+
 
 jwt:
   secret: kafka-commerce-jwt-secret-key-dev-256-bits-long-1234567890abcdefghijklmnopqrstuvwxyz
-  expiration: 86400000 # 24시간 
+#  expiration: 86400000 # 24시간
+#  refresh-expiration: 1209600000 # 14일
+  expiration: 60000 # 24시간
+  refresh-expiration: 120000 # 14일

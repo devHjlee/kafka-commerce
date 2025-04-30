@@ -2,13 +2,13 @@ spring:
   profiles:
     active: dev  # 기본적으로 dev 프로파일을 활성화
   datasource:
-    url: jdbc:h2:mem:testdb
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+    url: jdbc:mysql://localhost:3306/kafka_commerce?createDatabaseIfNotExist=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
@@ -17,6 +17,10 @@ spring:
     console:
       enabled: true
       path: /h2-console
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
 server:
   servlet:
@@ -27,4 +31,9 @@ server:
 
 jwt:
   secret: kafka-commerce-jwt-secret-key-256-bits-long-1234567890abcdefghijklmnopqrstuvwxyz
-  expiration: 86400000 # 24시간 
+  expiration: 3600000 # 1시간
+  refresh-expiration: 1209600000 # 14일
+
+logging:
+  level:
+    com.kafkacommerce: DEBUG 
