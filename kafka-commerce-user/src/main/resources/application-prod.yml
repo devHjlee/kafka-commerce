@@ -29,4 +29,5 @@ logging:
 
 jwt:
   secret: ${JWT_SECRET_KEY:prod-secret-key-256-bits-long-1234567890abcdefghijklmnopqrstuvwxyz}
-  expiration: 86400000 # 24시간 
+  expiration: 86400000 # 24시간
+  refresh-expiration: 1209600000 # 14일

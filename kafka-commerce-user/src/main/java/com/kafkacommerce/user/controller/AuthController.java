@@ -87,4 +87,10 @@ public class AuthController {
 
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/check-nickname")
+    public ResponseEntity<ApiResponse<Boolean>> checkNickname(@RequestParam String nickname) {
+        boolean available = authService.isNicknameAvailable(nickname);
+        return ResponseEntity.ok(ApiResponse.success(available, available ? "사용 가능한 닉네임입니다." : "이미 사용 중인 닉네임입니다."));
+    }
 }
