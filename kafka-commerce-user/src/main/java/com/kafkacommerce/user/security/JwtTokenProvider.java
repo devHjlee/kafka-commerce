@@ -38,11 +38,16 @@ public class JwtTokenProvider {
     }
 
     public String generateAccessToken(Authentication authentication) {
+        UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + expiration);
 
+        String role = principal.getAuthorities().iterator().next().getAuthority();
+
         return Jwts.builder()
-                .setSubject(authentication.getName())
+                .setSubject(principal.getEmail())
+                .claim("userId", principal.getId())
+                .claim("role", role)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(key)
@@ -68,11 +73,12 @@ public class JwtTokenProvider {
                 .parseClaimsJws(token)
                 .getBody();
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(claims.getSubject());
-
+        Long userId = claims.get("userId", Long.class);
+        String email = claims.getSubject();
+        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
         return new UsernamePasswordAuthenticationToken(
-            userDetails, 
-            token, 
+            userDetails,
+            token,
             userDetails.getAuthorities()
         );
     }
@@ -85,6 +91,15 @@ public class JwtTokenProvider {
                 .getBody();
 
         return claims.getSubject();
+    }
+
+    public Long getUserIdFromToken(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.get("userId", Long.class);
     }
 
     public boolean validateToken(String token) {

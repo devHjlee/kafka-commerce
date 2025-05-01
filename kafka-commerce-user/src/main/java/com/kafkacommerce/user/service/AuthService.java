@@ -9,6 +9,7 @@ import com.kafkacommerce.user.dto.response.LoginResponse;
 import com.kafkacommerce.user.dto.response.TokenResponse;
 import com.kafkacommerce.user.repository.UserRepository;
 import com.kafkacommerce.user.security.JwtTokenProvider;
+import com.kafkacommerce.user.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,7 +37,9 @@ public class AuthService {
         User user = User.createUser(
             request.getEmail(),
             passwordEncoder.encode(request.getPassword()),
-            request.getName()
+            request.getName(),
+            request.getNickname(),
+            request.getPhoneNumber()
         );
 
         userRepository.save(user);
@@ -54,10 +57,9 @@ public class AuthService {
         String accessToken = tokenProvider.generateAccessToken(authentication);
         String refreshToken = tokenProvider.generateRefreshToken(authentication.getName());
 
-        Long userId = userRepository.findByEmail(request.getEmail())
-            .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND))
-            .getId();
-            
+        UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
+        Long userId = principal.getId();
+
         refreshTokenService.saveRefreshToken(userId, refreshToken);
 
         return TokenResponse.builder()
@@ -66,6 +68,7 @@ public class AuthService {
                 .build();
     }
 
+    @Transactional(readOnly = true)
     public TokenResponse refreshAccessToken(String refreshToken) {
         // 1. 리프레시 토큰 유효성 검사
         if (!tokenProvider.validateToken(refreshToken)) {
@@ -100,6 +103,7 @@ public class AuthService {
                 .build();
     }
 
+    @Transactional(readOnly = true)
     public void logout(String refreshToken) {
         // 1. 리프레시 토큰에서 이메일 추출
         String userEmail = tokenProvider.getEmailFromToken(refreshToken);
@@ -110,5 +114,10 @@ public class AuthService {
                 .getId();
 
         refreshTokenService.deleteRefreshToken(userId);
+    }
+
+    @Transactional(readOnly = true)
+    public boolean isNicknameAvailable(String nickname) {
+        return !userRepository.existsByNickname(nickname);
     }
 } 

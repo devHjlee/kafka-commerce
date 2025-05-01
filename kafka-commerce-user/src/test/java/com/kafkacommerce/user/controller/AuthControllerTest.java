@@ -31,7 +31,7 @@ class AuthControllerTest {
     @DisplayName("유효하지 않은 비밀번호로 회원가입 시도 시 GlobalExceptionHandler가 동작해야 한다")
     void signUp_withInvalidPassword_shouldReturnBadRequest() throws Exception {
         // given
-        SignUpRequest request = new SignUpRequest("test@test.com", "invalid", "테스트");
+        SignUpRequest request = new SignUpRequest("test@test.com", "invalid", "테스트","","");
         String requestBody = objectMapper.writeValueAsString(request);
 
         // when

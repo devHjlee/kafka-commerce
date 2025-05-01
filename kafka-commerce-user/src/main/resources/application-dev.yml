@@ -34,7 +34,5 @@ logging:
 
 jwt:
   secret: kafka-commerce-jwt-secret-key-dev-256-bits-long-1234567890abcdefghijklmnopqrstuvwxyz
-#  expiration: 86400000 # 24시간
-#  refresh-expiration: 1209600000 # 14일
-  expiration: 60000 # 24시간
-  refresh-expiration: 120000 # 14일
+  expiration: 86400000 # 24시간
+  refresh-expiration: 1209600000 # 14일
