@@ -58,9 +58,26 @@ Kafka를 활용한 이벤트 기반 주문 처리를 적용한 프로젝트입�
 
 ### ✅ 상품
 
-- 상품 등록 (관리자)
-- 상품 목록/상세 조회
-- 재고 관리 (재고 모듈 통합 여부 미정)
+- 상품 등록 (관리자/셀러)
+- 상품 목록 조회 (페이징/정렬)
+- 상품 상세 조회
+- 상품 수정 (관리자/셀러)
+- 상품 삭제 (상태값 변경 포함)
+- 재고(Stock) 관리 (상품별 수량)
+- 단위 테스트(Mock), 통합 테스트(SpringBootTest+MockMvc)
+- 실무적 예외 처리, API 응답 구조, 보안/유효성 검증
+
+#### 🚩 추가로 고려하면 좋은 실무 기능
+- 카테고리/태그 관리
+- 상품 옵션(사이즈/색상 등) 및 옵션별 재고
+- 상품 이미지 다중 업로드/관리
+- 검색/필터링(키워드, 가격, 카테고리 등)
+- 리뷰/평점 관리
+- 할인/프로모션(쿠폰 등)
+- 상품 상태 관리(판매중/품절/숨김 등)
+- 상품 변경/재고 변경 이력 관리
+- 관리자/셀러 권한 분리
+- API 문서화(Swagger/OpenAPI)
 
 ### ✅ 주문
 
@@ -152,6 +169,11 @@ Kafka를 활용한 이벤트 기반 주문 처리를 적용한 프로젝트입�
   - PUT    /api/users/me                            # 내 정보 수정
   - PUT    /api/users/me/password                   # 비밀번호 변경
 - Product: /api/products/*
+  - GET    /api/products                # 상품 목록 조회 (페이징/정렬)
+  - GET    /api/products/{id}           # 상품 상세 조회
+  - POST   /api/products                # 상품 등록 (관리자/셀러)
+  - PUT    /api/products/{id}           # 상품 수정 (관리자/셀러)
+  - DELETE /api/products/{id}           # 상품 삭제 (상태값 변경)
 - Order: /api/orders/*
 - Payment: /api/payments/*
 - DeliveryAddress: /api/delivery-addresses/*
