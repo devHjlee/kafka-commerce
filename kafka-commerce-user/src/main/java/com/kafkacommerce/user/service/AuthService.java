@@ -2,22 +2,26 @@ package com.kafkacommerce.user.service;
 
 import com.kafkacommerce.common.exception.BusinessException;
 import com.kafkacommerce.common.exception.ErrorCode;
+import com.kafkacommerce.common.jwt.JwtTokenProvider;
+import com.kafkacommerce.common.security.UserPrincipal;
 import com.kafkacommerce.user.domain.User;
 import com.kafkacommerce.user.dto.request.LoginRequest;
 import com.kafkacommerce.user.dto.request.SignUpRequest;
-import com.kafkacommerce.user.dto.response.LoginResponse;
 import com.kafkacommerce.user.dto.response.TokenResponse;
 import com.kafkacommerce.user.repository.UserRepository;
-import com.kafkacommerce.user.security.JwtTokenProvider;
-import com.kafkacommerce.user.security.UserPrincipal;
+
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -47,25 +51,42 @@ public class AuthService {
 
     @Transactional(readOnly = true)
     public TokenResponse login(LoginRequest request) {
-        Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(
-                request.getEmail(),
-                request.getPassword()
-            )
-        );
+        try {
+            log.info("Attempting login for user: {}", request.getEmail());
+            
+            Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                    request.getEmail(),
+                    request.getPassword()
+                )
+            );
 
-        String accessToken = tokenProvider.generateAccessToken(authentication);
-        String refreshToken = tokenProvider.generateRefreshToken(authentication.getName());
+            UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
+            log.info("User authenticated successfully: {}", principal.getEmail());
 
-        UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
-        Long userId = principal.getId();
+            String accessToken = tokenProvider.createAccessToken(
+                principal.getEmail(),
+                principal.getId().toString(),
+                principal.getAuthorities().iterator().next().getAuthority()
+            );
+            String refreshToken = tokenProvider.createRefreshToken(principal.getEmail());
 
-        refreshTokenService.saveRefreshToken(userId, refreshToken);
+            refreshTokenService.saveRefreshToken(principal.getId(), refreshToken);
 
-        return TokenResponse.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build();
+            return TokenResponse.builder()
+                    .accessToken(accessToken)
+                    .refreshToken(refreshToken)
+                    .build();
+        } catch (BadCredentialsException e) {
+            log.error("Invalid credentials for user: {}", request.getEmail(), e);
+            throw new BusinessException(ErrorCode.INVALID_CREDENTIALS);
+        } catch (AuthenticationException e) {
+            log.error("Authentication failed for user: {}", request.getEmail(), e);
+            throw new BusinessException(ErrorCode.AUTHENTICATION_FAILED);
+        } catch (Exception e) {
+            log.error("Unexpected error during login for user: {}", request.getEmail(), e);
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Transactional(readOnly = true)
@@ -79,23 +100,24 @@ public class AuthService {
         String userEmail = tokenProvider.getEmailFromToken(refreshToken);
 
         // 3. 레디스에서 리프레시 토큰 조회 및 검증
-        Long userId = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND))
-                .getId();
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 
-        String savedRefreshToken = refreshTokenService.getRefreshToken(userId);
+        String savedRefreshToken = refreshTokenService.getRefreshToken(user.getId());
         if (savedRefreshToken == null || !savedRefreshToken.equals(refreshToken)) {
             throw new BusinessException(ErrorCode.TOKEN_NOT_FOUND);
         }
 
         // 4. 새로운 액세스 토큰과 리프레시 토큰 발급
-        String newAccessToken = tokenProvider.generateAccessToken(
-            new UsernamePasswordAuthenticationToken(userEmail, null)
+        String newAccessToken = tokenProvider.createAccessToken(
+            user.getEmail(),
+            user.getId().toString(),
+            user.getRole().name()
         );
-        String newRefreshToken = tokenProvider.generateRefreshToken(userEmail);
+        String newRefreshToken = tokenProvider.createRefreshToken(user.getEmail());
 
         // 5. 새로운 리프레시 토큰 저장
-        refreshTokenService.saveRefreshToken(userId, newRefreshToken);
+        refreshTokenService.saveRefreshToken(user.getId(), newRefreshToken);
 
         return TokenResponse.builder()
                 .accessToken(newAccessToken)
