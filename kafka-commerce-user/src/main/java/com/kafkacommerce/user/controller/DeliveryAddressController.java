@@ -1,9 +1,10 @@
 package com.kafkacommerce.user.controller;
 
 import com.kafkacommerce.common.response.ApiResponse;
+import com.kafkacommerce.common.security.UserPrincipal;
 import com.kafkacommerce.user.domain.DeliveryAddress;
 import com.kafkacommerce.user.service.DeliveryAddressService;
-import com.kafkacommerce.user.security.UserPrincipal;
+
 import com.kafkacommerce.user.dto.request.CreateDeliveryAddressRequest;
 import com.kafkacommerce.user.dto.request.UpdateDeliveryAddressRequest;
 import jakarta.validation.Valid;

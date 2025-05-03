@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/kafka_commerce_prod?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: kafka_commerce_prod
+    password: 1234
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+  h2:
+    console:
+      enabled: false
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
+
+logging:
+  level:
+    root: INFO
+    com.kafkacommerce: INFO
+
+jwt:
+  secret: ${JWT_SECRET_KEY:prod-secret-key-256-bits-long-1234567890abcdefghijklmnopqrstuvwxyz}
+  expiration: 86400000 # 24시간
+  refresh-expiration: 1209600000 # 14일

@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
     private final ProductService productService;
 
-    @PostMapping
-    @PreAuthorize("hasRole('SELLER')")
-    public ResponseEntity<ApiResponse<ProductResponse>> createProduct(@Validated @RequestBody ProductCreateRequest request) {
-        ProductResponse response = productService.createProduct(request);
-        return ResponseEntity.ok(ApiResponse.success(response, "상품 등록 성공"));
+    @GetMapping
+    //@PreAuthorize("hasRole('SELLER')")
+    public ResponseEntity<ApiResponse<ProductResponse>> createProduct() {
+        //ProductResponse response = productService.createProduct(request);
+        return ResponseEntity.ok(ApiResponse.success("상품 등록 성공"));
     }
 }

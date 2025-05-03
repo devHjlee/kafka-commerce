@@ -1,6 +1,5 @@
-package com.kafkacommerce.user.security;
+package com.kafkacommerce.common.security;
 
-import com.kafkacommerce.user.domain.User;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,17 +22,6 @@ public class UserPrincipal implements UserDetails {
         this.password = password;
         this.authorities = authorities;
     }
-
-    public static UserPrincipal from(User user) {
-        return new UserPrincipal(
-            user.getId(),
-            user.getEmail(),
-            user.getPassword(),
-            Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()))
-        );
-    }
-
-    public Long getId() { return id; }
 
     @Override
     public String getUsername() { return email; }
