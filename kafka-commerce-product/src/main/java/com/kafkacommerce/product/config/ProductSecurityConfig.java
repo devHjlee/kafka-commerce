@@ -25,7 +25,7 @@ public class ProductSecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/products/**").hasRole("USER")
+                .requestMatchers("/api/products/**").hasRole("SELLER")
                 .anyRequest().permitAll()
             );
         return http.build();
