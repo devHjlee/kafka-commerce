@@ -1,4 +1,4 @@
-package com.kafkacommerce.product.dto;
+package com.kafkacommerce.product.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;

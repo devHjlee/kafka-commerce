@@ -33,7 +33,14 @@ public class Stock extends BaseEntity {
         this.quantity = quantity;
     }
 
-    public void changeQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void decrease(int amount) {
+        if (quantity - amount < 0) {
+            throw new IllegalArgumentException("재고가 부족합니다.");
+        }
+        this.quantity -= amount;
+    }
+
+    public void increase(int amount) {
+        this.quantity += amount;
     }
 } 

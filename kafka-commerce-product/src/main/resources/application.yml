@@ -28,6 +28,7 @@ server:
       charset: UTF-8
       force: true
       enabled: true
+  port: 8081
 
 jwt:
   secret: kafka-commerce-jwt-secret-key-256-bits-long-1234567890abcdefghijklmnopqrstuvwxyz

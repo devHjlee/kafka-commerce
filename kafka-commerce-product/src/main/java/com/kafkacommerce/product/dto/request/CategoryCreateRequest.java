@@ -1,4 +1,4 @@
-package com.kafkacommerce.product.dto;
+package com.kafkacommerce.product.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;

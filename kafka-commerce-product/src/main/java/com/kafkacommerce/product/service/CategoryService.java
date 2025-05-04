@@ -1,8 +1,8 @@
 package com.kafkacommerce.product.service;
 
 import com.kafkacommerce.product.domain.Category;
-import com.kafkacommerce.product.dto.CategoryCreateRequest;
-import com.kafkacommerce.product.dto.CategoryResponse;
+import com.kafkacommerce.product.dto.request.CategoryCreateRequest;
+import com.kafkacommerce.product.dto.response.CategoryResponse;
 import com.kafkacommerce.product.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
