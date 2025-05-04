@@ -26,7 +26,7 @@ public class OutBoxPublishService {
                 event.getOrderId(), "OrderChanged");
 
         eventOutbox.ifPresent(outbox -> {
-            kafkaTemplate.send("order.changed", outbox.getPayload())
+            kafkaTemplate.send("stock.deducted", outbox.getPayload())
                     .whenComplete((result, ex) -> {
                         if (ex == null) {
                             outbox.completeSent();

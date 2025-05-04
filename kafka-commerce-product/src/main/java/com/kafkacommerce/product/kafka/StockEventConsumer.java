@@ -19,11 +19,11 @@ public class StockEventConsumer {
         log.info("[Kafka] 주문 생성 이벤트 수신: {}", event);
 
         try {
-            stockService.decreaseStock(event.getProductId(), event.getOptionId(), event.getQuantity());
+            stockService.decreaseStock(event);
             log.info("[Kafka] 재고 차감 성공 - 상품ID: {}, 수량: {}", event.getProductId(), event.getQuantity());
         } catch (Exception e) {
             log.error("[Kafka] 재고 차감 실패: {}", e.getMessage(), e);
-
+            throw new RuntimeException("a");
         }
 
     }
