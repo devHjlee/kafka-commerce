@@ -33,15 +33,13 @@ Kafka를 활용한 이벤트 기반 주문 처리를 적용한 프로젝트입�
 ## 📦 멀티모듈 구성
 
 - `kafka-commerce-common`  
-  → 공통 응답 포맷, 예외 처리, 상수, DTO
+  → 공통 응답 포맷, 예외 처리, 상수, DTO, JWT
 - `kafka-commerce-user`  
   → 회원가입, 로그인, JWT 인증, 리프레시 토큰 관리
 - `kafka-commerce-product`  
-  → 상품 등록, 조회, 재고 관리 (재고 모듈 통합 여부 미정)
+  → 상품 등록, 재고 관리
 - `kafka-commerce-order`  
   → 주문 생성, Kafka 이벤트 발행
-- `kafka-commerce-payment`  
-  → 결제 처리 (카드, 현금, 마일리지), 이벤트 발행
 
 ---
 
@@ -52,53 +50,18 @@ Kafka를 활용한 이벤트 기반 주문 처리를 적용한 프로젝트입�
 - 회원가입, 로그인
 - JWT 발급 (액세스 토큰, 리프레시 토큰)
 - Redis 기반 리프레시 토큰 관리
-- 닉네임 중복 체크
-- 내 정보 조회/수정
-- 비밀번호 변경
 
 ### ✅ 상품
 
-- 상품 등록 (관리자/셀러)
-- 상품 목록 조회 (페이징/정렬)
-- 상품 상세 조회
-- 상품 수정 (관리자/셀러)
-- 상품 삭제 (상태값 변경 포함)
+- 상품 등록
 - 재고(Stock) 관리 (상품별 수량)
-- 단위 테스트(Mock), 통합 테스트(SpringBootTest+MockMvc)
-- 실무적 예외 처리, API 응답 구조, 보안/유효성 검증
 
-#### 🚩 추가로 고려하면 좋은 실무 기능
-- 카테고리/태그 관리
-- 상품 옵션(사이즈/색상 등) 및 옵션별 재고
-- 상품 이미지 다중 업로드/관리
-- 검색/필터링(키워드, 가격, 카테고리 등)
-- 리뷰/평점 관리
-- 할인/프로모션(쿠폰 등)
-- 상품 상태 관리(판매중/품절/숨김 등)
-- 상품 변경/재고 변경 이력 관리
-- 관리자/셀러 권한 분리
-- API 문서화(Swagger/OpenAPI)
 
 ### ✅ 주문
 
 - 주문 생성
 - Kafka 주문 이벤트 발행
-- 내 주문 목록 조회
 
-### ✅ 결제
-
-- 결제 처리 (카드, 현금, 마일리지)
-- 실제 PG 연동 없음
-- 결제 상태 관리
-- Kafka 결제 이벤트 발행
-
-### ✅ 배송지
-
-- 배송지 목록 조회
-- 배송지 등록
-- 배송지 수정
-- 배송지 삭제
-- 기본 배송지 설정
 
 ---
 
@@ -166,22 +129,9 @@ Kafka를 활용한 이벤트 기반 주문 처리를 적용한 프로젝트입�
 - User: /api/auth/*, /api/users/*
   - GET    /api/users/check-nickname?nickname=xxx   # 닉네임 중복 체크
   - GET    /api/users/me                            # 내 정보 조회
-  - PUT    /api/users/me                            # 내 정보 수정
-  - PUT    /api/users/me/password                   # 비밀번호 변경
 - Product: /api/products/*
-  - GET    /api/products                # 상품 목록 조회 (페이징/정렬)
-  - GET    /api/products/{id}           # 상품 상세 조회
-  - POST   /api/products                # 상품 등록 (관리자/셀러)
-  - PUT    /api/products/{id}           # 상품 수정 (관리자/셀러)
-  - DELETE /api/products/{id}           # 상품 삭제 (상태값 변경)
+  - POST   /api/products                # 상품 등록
 - Order: /api/orders/*
-- Payment: /api/payments/*
-- DeliveryAddress: /api/delivery-addresses/*
-  - GET    /api/delivery-addresses                 # 내 배송지 목록 조회
-  - POST   /api/delivery-addresses                 # 배송지 등록
-  - PUT    /api/delivery-addresses/{id}            # 배송지 수정
-  - DELETE /api/delivery-addresses/{id}            # 배송지 삭제
-  - PATCH  /api/delivery-addresses/{id}/default    # 기본 배송지 설정
 
 ---
 
@@ -198,41 +148,5 @@ Kafka를 활용한 이벤트 기반 주문 처리를 적용한 프로젝트입�
 - 데이터베이스 연동
 
 ---
-
-## 🚀 배포 전략
-
-### 환경 구성
-- 개발 환경 (로컬)
-- 테스트 환경
-- 프로덕션 환경
-
-### CI/CD
-- GitHub Actions를 통한 자동화
-- 환경별 배포 파이프라인
-
----
-
-## 📊 모니터링
-
-### 로깅
-- 로그 레벨 설정
-- 로그 포맷
-- 로그 수집 전략
-
-### 메트릭
-- API 응답 시간
-- Kafka 메시지 처리량
-- 데이터베이스 성능
-
----
-
-## 🧑‍💻 로컬 실행 방법
-
-```bash
-# Kafka, Zookeeper, MySQL 실행 필요
-$ ./gradlew clean build
-$ cd kafka-commerce-user
-$ ./gradlew bootRun
-```
 
 ---
