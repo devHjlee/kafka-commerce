@@ -2,8 +2,9 @@ package com.kafkacommerce.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.kafkacommerce.gateway", "com.kafkacommerce.common"},exclude = {DataSourceAutoConfiguration.class})
 public class KafkaCommerceGatewayApplication {
 
     public static void main(String[] args) {
