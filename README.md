@@ -11,7 +11,7 @@ Kafka를 활용한 이벤트 기반 주문 처리를 적용한 프로젝트입�
 - **목표**: Kafka 기반의 실시간 주문 처리 시스템 설계 및 구현
 - **특징**:
   - 멀티모듈 구조로 도메인 책임 분리
-  - Kafka 기반 비동기 이벤트 처리
+  - Kafka 기반 비동기 이벤트 처리 (Outbox)
   - JWT + Redis 기반 사용자 인증 및 권한 관리
   - 실무형 예외 응답, 공통 응답 포맷 설계
 
@@ -37,7 +37,7 @@ Kafka를 활용한 이벤트 기반 주문 처리를 적용한 프로젝트입�
 - `kafka-commerce-user`  
   → 회원가입, 로그인, JWT 인증, 리프레시 토큰 관리
 - `kafka-commerce-product`  
-  → 상품 등록, 재고 관리
+  → 상품 등록, 재고 관리(redisson 분산락)
 - `kafka-commerce-order`  
   → 주문 생성, Kafka 이벤트 발행
 

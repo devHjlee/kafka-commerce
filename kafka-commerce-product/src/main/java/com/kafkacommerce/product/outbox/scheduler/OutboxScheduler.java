@@ -17,16 +17,16 @@ import java.util.List;
 public class OutboxScheduler {
 
     private final EventOutboxRepository outboxRepository;
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTemplate<String, String> outboxKafkaTemplate;
 
     @Scheduled(fixedDelay = 5000)
     @Transactional
     public void publishPendingOutboxEvents() {
-        List<EventOutbox> unsentEvents = outboxRepository.findAllBySentFalseAndType("OrderCreated");
+        List<EventOutbox> unsentEvents = outboxRepository.findAllBySentFalseAndType("OrderChanged");
 
         for (EventOutbox outbox : unsentEvents) {
             try {
-                kafkaTemplate.send("stock.deducted", outbox.getPayload());
+                outboxKafkaTemplate.send("stock.deducted", outbox.getPayload());
                 outbox.completeSent(); // sent = true 변경
                 log.info("스케줄러 재전송 성공: id={}, aggregateId={}", outbox.getId(), outbox.getAggregateId());
             } catch (Exception e) {
@@ -35,4 +35,3 @@ public class OutboxScheduler {
         }
     }
 }
-
