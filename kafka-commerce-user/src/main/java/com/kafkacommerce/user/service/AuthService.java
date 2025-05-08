@@ -3,7 +3,7 @@ package com.kafkacommerce.user.service;
 import com.kafkacommerce.common.exception.BusinessException;
 import com.kafkacommerce.common.exception.ErrorCode;
 import com.kafkacommerce.common.jwt.JwtTokenProvider;
-import com.kafkacommerce.common.security.UserPrincipal;
+import com.kafkacommerce.commonweb.security.UserPrincipal;
 import com.kafkacommerce.user.domain.User;
 import com.kafkacommerce.user.dto.request.LoginRequest;
 import com.kafkacommerce.user.dto.request.SignUpRequest;

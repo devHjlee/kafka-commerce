@@ -1,7 +1,7 @@
 package com.kafkacommerce.user.controller;
 
 import com.kafkacommerce.common.response.ApiResponse;
-import com.kafkacommerce.common.security.UserPrincipal;
+import com.kafkacommerce.commonweb.security.UserPrincipal;
 import com.kafkacommerce.user.domain.DeliveryAddress;
 import com.kafkacommerce.user.service.DeliveryAddressService;
 

@@ -1,0 +1,39 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: kafka-commerce-gateway
+  cloud:
+    gateway:
+      default-filters:
+        - AddRequestHeader=X-Gateway, KafkaCommerce
+      routes:
+        - id: user-service
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/users/**, /api/auth/**
+
+        - id: order-service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/orders/**
+
+        - id: product-service
+          uri: http://localhost:8083
+          predicates:
+            - Path=/api/products/**
+
+  main:
+    web-application-type: reactive
+
+jwt:
+  secret: kafka-commerce-jwt-secret-key-dev-256-bits-long-1234567890abcdefghijklmnopqrstuvwxyz
+  expiration: 3600000 # 1시간 (Access Token)
+  refresh-expiration: 1209600000 # 14일 (Refresh Token)
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty: INFO

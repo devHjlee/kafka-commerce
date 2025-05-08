@@ -1,7 +1,8 @@
 package com.kafkacommerce.user.controller;
 
 import com.kafkacommerce.common.response.ApiResponse;
-import com.kafkacommerce.common.security.UserPrincipal;
+
+import com.kafkacommerce.commonweb.security.UserPrincipal;
 import com.kafkacommerce.user.domain.User;
 import com.kafkacommerce.user.dto.request.UpdateUserInfoRequest;
 import com.kafkacommerce.user.dto.request.ChangePasswordRequest;
