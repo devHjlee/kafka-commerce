@@ -21,6 +21,10 @@ public class JwtReactiveAuthenticationManager implements ReactiveAuthenticationM
 
     @Override
     public Mono<Authentication> authenticate(Authentication authentication) {
+        // UsernamePasswordAuthenticationToken 타입만 처리
+        if (!(authentication instanceof UsernamePasswordAuthenticationToken)) {
+            return Mono.empty();
+        }
         String token = authentication.getCredentials().toString();
         if (jwtTokenProvider.validateToken(token)) {
             String userId = jwtTokenProvider.getUserIdFromToken(token);
