@@ -1,7 +1,8 @@
 package com.kafkacommerce.order.config;
 
-import com.kafkacommerce.common.jwt.JwtAuthenticationFilter;
+
 import com.kafkacommerce.common.jwt.JwtTokenProvider;
+import com.kafkacommerce.commonweb.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

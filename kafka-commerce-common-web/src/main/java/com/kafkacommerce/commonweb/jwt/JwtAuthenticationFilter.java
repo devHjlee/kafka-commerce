@@ -1,6 +1,7 @@
-package com.kafkacommerce.common.jwt;
+package com.kafkacommerce.commonweb.jwt;
 
-import com.kafkacommerce.common.security.UserPrincipal;
+import com.kafkacommerce.common.jwt.JwtTokenProvider;
+import com.kafkacommerce.commonweb.security.UserPrincipal;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,6 +1,6 @@
 package com.kafkacommerce.user.security;
 
-import com.kafkacommerce.common.security.UserPrincipal;
+import com.kafkacommerce.commonweb.security.UserPrincipal;
 import com.kafkacommerce.user.domain.User;
 import com.kafkacommerce.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

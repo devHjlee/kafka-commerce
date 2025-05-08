@@ -1,7 +1,7 @@
 package com.kafkacommerce.user.config;
 
-import com.kafkacommerce.common.jwt.JwtAuthenticationFilter;
 import com.kafkacommerce.common.jwt.JwtTokenProvider;
+import com.kafkacommerce.commonweb.jwt.JwtAuthenticationFilter;
 import com.kafkacommerce.user.security.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -32,7 +32,7 @@ public class UserSecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**", "/api/users/register").permitAll()
+                .requestMatchers("/api/auth/**", "/api/users/check-nickname").permitAll()
                 .anyRequest().authenticated()
             );
         return http.build();

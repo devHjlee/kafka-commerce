@@ -1,12 +1,10 @@
 package com.kafkacommerce.order.controller;
 
 import com.kafkacommerce.common.response.ApiResponse;
-import com.kafkacommerce.common.security.UserPrincipal;
 import com.kafkacommerce.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

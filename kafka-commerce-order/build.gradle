@@ -29,8 +29,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.kafka:spring-kafka'
-    // Common 모듈 의존성
-    implementation project(':kafka-commerce-common')
+    // Common Web 모듈 의존성
+    implementation project(':kafka-commerce-common-web')
 
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.mysql:mysql-connector-j'

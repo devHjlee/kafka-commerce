@@ -1,5 +1,7 @@
-package com.kafkacommerce.common.exception;
+package com.kafkacommerce.commonweb.exception;
 
+import com.kafkacommerce.common.exception.BusinessException;
+import com.kafkacommerce.common.exception.ErrorCode;
 import com.kafkacommerce.common.response.ApiResponse;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
@@ -39,7 +41,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<ApiResponse<Void>> handleBusinessException(BusinessException e) {
-        return ResponseEntity.status(e.getErrorCode().getStatus())
+        return ResponseEntity.status(e.getErrorCode().getStatusCode())
                 .body(ApiResponse.error(e.getMessage()));
     }
 
