@@ -11,26 +11,26 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 @EnableWebFluxSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final JwtReactiveAuthenticationManager jwtReactiveAuthenticationManager;
-//    @Bean
-//    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
-//        http
-//                .csrf(ServerHttpSecurity.CsrfSpec::disable)
-//                .authorizeExchange(exchanges -> exchanges
-//                        .anyExchange().permitAll() // 모든 요청을 GlobalFilter에서 처리
-//                );
-//        return http.build();
-//    }
+//    private final JwtReactiveAuthenticationManager jwtReactiveAuthenticationManager;
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
-                .authenticationManager(jwtReactiveAuthenticationManager)
                 .authorizeExchange(exchanges -> exchanges
-                        .pathMatchers("/api/auth/**").permitAll()
-                        .anyExchange().authenticated()
+                        .anyExchange().permitAll() // 모든 요청을 GlobalFilter에서 처리
                 );
         return http.build();
     }
+//    @Bean
+//    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+//        http
+//                .csrf(ServerHttpSecurity.CsrfSpec::disable)
+//                .authenticationManager(jwtReactiveAuthenticationManager)
+//                .authorizeExchange(exchanges -> exchanges
+//                        .pathMatchers("/api/auth/**").permitAll()
+//                        .anyExchange().authenticated()
+//                );
+//        return http.build();
+//    }
 }
 

@@ -28,7 +28,7 @@ spring:
     web-application-type: reactive
 
 jwt:
-  secret: kafka-commerce-jwt-secret-key-256-bits-long-1234567890abcdefghijklmnopqrstuvwxyz
+  secret: kafka-commerce-jwt-secret-key-dev-256-bits-long-1234567890abcdefghijklmnopqrstuvwxyz
   expiration: 3600000 # 1시간 (Access Token)
   refresh-expiration: 1209600000 # 14일 (Refresh Token)
 
